@@ -90,5 +90,56 @@ class CalculatorTest {
 
 
     //TODO hier weitere Tests erstellen
+
+@Test
+    @DisplayName("should display positive result after multiplying two negative numbers")
+    void testMultiplyingTwoNegativeNumbers(){
+        Calculator calc = new Calculator();
+
+        calc.pressDigitKey(3);
+        calc.pressNegativeKey();
+        calc.pressBinaryOperationKey("x");
+        calc.pressDigitKey(4);
+        calc.pressNegativeKey();
+        calc.pressEqualsKey();
+
+        String expected = "12";
+        String actual = calc.readScreen();
+
+        assertEquals(expected, actual);
+
 }
+
+
+
+
+
+    @Test
+    @DisplayName("should do nothing if equals key is pressed without any prior operation key")
+    void testEqualsKeyDoNothing(){
+        Calculator calc = new Calculator();
+        calc.pressDigitKey(3);
+        calc.pressEqualsKey();
+
+        assertEquals("3" , calc.readScreen());
+    }
+
+    @Test
+    @DisplayName("should clear latestValue and latestOperation after clearing twice")
+    void testClearKeyTwice(){
+        Calculator calc = new Calculator();
+        calc.pressDigitKey(1);
+        calc.pressBinaryOperationKey("+");
+        calc.pressDigitKey(3);
+        calc.pressClearKey();
+        calc.pressClearKey();
+        calc.pressDigitKey(2);
+        calc.pressEqualsKey();
+
+        assertEquals("2" , calc.readScreen());   // Wenn man nur einmal pressClearKey betätigt, sollte das Ergebnis 3 sein, da latestValue und latestOperation noch gespeichert sind.
+    }
+
+}
+
+
 
