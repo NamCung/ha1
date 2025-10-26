@@ -90,6 +90,7 @@ class CalculatorTest {
 
 
     //TODO hier weitere Tests erstellen
+    @Test
 
 @Test
     @DisplayName("should display positive result after multiplying two negative numbers")
@@ -108,7 +109,7 @@ class CalculatorTest {
 
         assertEquals(expected, actual);
 
-}
+    }
 
 
 
