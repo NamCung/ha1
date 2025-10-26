@@ -12,6 +12,8 @@ public class Calculator {
 
     private double latestValue;
 
+    private boolean alreadyCleared = false;     // neu eingesetzt, für den 2. Test um zu unterscheiden ob Clear Taste schon gedrückt wurde oder nicht.
+                                                // muss in fast allen Methoden auf false gesetzt werden um nicht ausversehen CE Verhalten auszulösen.
     private String latestOperation = "";
 
     /**
@@ -34,6 +36,7 @@ public class Calculator {
         if(screen.equals("0") || latestValue == Double.parseDouble(screen)) screen = "";
 
         screen = screen + digit;
+        alreadyCleared = false;
     }
 
     /**
@@ -45,10 +48,19 @@ public class Calculator {
      * im Ursprungszustand ist.
      */
     public void pressClearKey() {
-        screen = "0";
-        latestOperation = "";
-        latestValue = 0.0;
+        if(alreadyCleared){          // 2. mal pressClearKey
+            latestOperation = "";
+            latestValue = 0.0;
+        alreadyCleared = false;  // false gesetzt für den nächsten Ablauf
+
+        }
+        else{
+            screen = "0";
+            alreadyCleared = true;
+       }
     }
+
+
 
     /**
      * Empfängt den Wert einer gedrückten binären Operationstaste, also eine der vier Operationen
@@ -62,6 +74,7 @@ public class Calculator {
     public void pressBinaryOperationKey(String operation)  {
         latestValue = Double.parseDouble(screen);
         latestOperation = operation;
+        alreadyCleared = false;
     }
 
     /**
@@ -83,7 +96,7 @@ public class Calculator {
         screen = Double.toString(result);
         if(screen.equals("NaN")) screen = "Error";
         if(screen.contains(".") && screen.length() > 11) screen = screen.substring(0, 10);
-
+        alreadyCleared = false;
     }
 
     /**
@@ -95,6 +108,7 @@ public class Calculator {
      */
     public void pressDotKey() {
         if(!screen.contains(".")) screen = screen + ".";
+        alreadyCleared = false;
     }
 
     /**
@@ -106,6 +120,7 @@ public class Calculator {
      */
     public void pressNegativeKey() {
         screen = screen.startsWith("-") ? screen.substring(1) : "-" + screen;
+        alreadyCleared= false;
     }
 
     /**
@@ -131,5 +146,6 @@ public class Calculator {
         if(screen.equals("Infinity")) screen = "Error";
         if(screen.endsWith(".0")) screen = screen.substring(0,screen.length()-2);
         if(screen.contains(".") && screen.length() > 11) screen = screen.substring(0, 10);
+        alreadyCleared = false;
     }
 }
